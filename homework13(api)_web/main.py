@@ -48,7 +48,7 @@ def upload_avatar(file: UploadFile, db: Session = Depends(get_db),
     current_user.avatar_url = result["secure_url"]
     db.commit()
     return current_user
-
+                      
 @app.post("/contacts/", response_model=schemas.Contact)
 
 @limiter.limit("5/minute")
@@ -59,7 +59,6 @@ def create_contact(contact: schemas.ContactCreate, db: Session = Depends(get_db)
 @app.get("/contacts/", response_model=list[schemas.Contact])
 def read_contacts(skip: int = 0, limit: int = 10, db: Session = Depends(get_db),
                   current_user: schemas.User = Depends(crud.get_current_active_user)):
-
     return crud.get_contacts(db, skip=skip, limit=limit, user_id=current_user.id)
 
 @app.get("/contacts/{contact_id}", response_model=schemas.Contact)
